@@ -13,8 +13,8 @@ public class ClientHandler implements Runnable {
     public void run() {
 
         try {
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()),true );
+            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            PrintWriter out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()),true );
 
             String clientAddress = socket.getInetAddress().getHostAddress();
             System.out.println("[CLIENTE " + clientAddress + "] Conectado.");
@@ -80,23 +80,7 @@ public class ClientHandler implements Runnable {
             }
 
         } catch (IOException e) {
-            System.err.println("Erro com cliente " + 
-                    socket.getInetAddress().getHostAddress() + ": " + e.getMessage());
-        } finally {
-            // Fechando os recursos manualmente
-            try {
-                if (in != null) in.close();
-            } catch (IOException ignored) {}
-            
-            try {
-                if (out != null) out.close();
-            } catch (IOException ignored) {}
-            
-            try {
-                if (socket != null && !socket.isClosed()) {
-                    socket.close();
-                }
-            } catch (IOException ignored) {}
-        }
+            System.err.println("Erro com cliente " +  socket.getInetAddress().getHostAddress() + ": " + e.getMessage());
+        } 
     }
 }
