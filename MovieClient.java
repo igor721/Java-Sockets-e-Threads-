@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class MovieClient {
 
-    private static final String HOST = "172.17.0.1";
+    private static final String HOST = "localhost";
     private static final int PORT = 12345;
 
     public static void main(String[] args) {
