@@ -6,7 +6,6 @@ import java.util.concurrent.*;
 public class MovieServer {
 
     private static final int PORT = 12345;
-
     private static final int MAX_CONNECTIONS = 5;
 
     private static final List<Movie> movies =
