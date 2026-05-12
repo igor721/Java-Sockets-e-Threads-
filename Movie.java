@@ -1,11 +1,8 @@
 public class Movie {
 
     private int id;
-
     private String name;
-
     private String category;
-
     private boolean available;
 
     public Movie(int id, String name, String category) {
