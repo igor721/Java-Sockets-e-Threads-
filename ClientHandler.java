@@ -12,18 +12,21 @@ public class ClientHandler implements Runnable {
     @Override
     public void run() {
 
-        try (
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            PrintWriter out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()),true);
-        ) {
+        try {
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()),true );
+
             String clientAddress = socket.getInetAddress().getHostAddress();
             System.out.println("[CLIENTE " + clientAddress + "] Conectado.");
             String input;
 
             while ((input = in.readLine()) != null) {
+
                 input = input.trim();
                 System.out.println("[CLIENTE " + clientAddress + "] Enviou: " + input);
+
                 switch (input) {
+
                     case "1":
                         out.println("FILMES DISPONIVEIS:");
                         String lista = MovieServer.listMovies();
@@ -34,6 +37,7 @@ public class ClientHandler implements Runnable {
                     case "2":
                         out.println("Digite o ID do filme para alugar:");
                         out.println("=== FIM ===");
+
                         String idAlugar = in.readLine();
                         if (idAlugar != null) {
                             try {
@@ -45,9 +49,11 @@ public class ClientHandler implements Runnable {
                         }
                         out.println("=== FIM ===");
                         break;
+
                     case "3":
                         out.println("Digite o ID do filme para devolver:");
                         out.println("=== FIM ===");
+
                         String idDevolver = in.readLine();
                         if (idDevolver != null) {
                             try {
@@ -61,7 +67,6 @@ public class ClientHandler implements Runnable {
                         break;
 
                     case "0":
-
                         out.println("Conexão encerrada.");
                         out.println("=== FIM ===");
                         System.out.println("[CLIENTE " + clientAddress + "] Desconectou.");
@@ -73,13 +78,25 @@ public class ClientHandler implements Runnable {
                         break;
                 }
             }
+
         } catch (IOException e) {
-            System.err.println("Erro com cliente: " + e.getMessage());
+            System.err.println("Erro com cliente " + 
+                    socket.getInetAddress().getHostAddress() + ": " + e.getMessage());
         } finally {
+            // Fechando os recursos manualmente
             try {
-                socket.close();
-            } catch (IOException ignored) {
-            }
+                if (in != null) in.close();
+            } catch (IOException ignored) {}
+            
+            try {
+                if (out != null) out.close();
+            } catch (IOException ignored) {}
+            
+            try {
+                if (socket != null && !socket.isClosed()) {
+                    socket.close();
+                }
+            } catch (IOException ignored) {}
         }
     }
 }

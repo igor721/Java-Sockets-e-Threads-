@@ -10,10 +10,10 @@ def receber_resposta(sock):
         dados += parte
         if "=== FIM ===" in dados:
             break
-    return dados.replace("=== FIM ===", "").strip()
+    return dados.replace("=== FIM ===", "")
 
 def main():
-
+    
     client = None
 
     try:
@@ -28,7 +28,7 @@ def main():
             print("3 - DEVOLVER_FILME")
             print("0 - SAIR")
 
-            comando = input("\nEscolha uma opção: ").strip()
+            comando = input("\nEscolha uma opção: ")
             client.sendall((comando + '\n').encode('utf-8'))
 
             if comando == '0':
@@ -42,7 +42,7 @@ def main():
             print("\n" + resposta)
 
             if comando in ['2', '3']:
-                movie_id = input("\nDigite o ID: ").strip()
+                movie_id = input("\nDigite o ID: ")
                 client.sendall((movie_id + '\n').encode('utf-8'))
                 resposta = receber_resposta(client)
                 print("\n" + resposta)
